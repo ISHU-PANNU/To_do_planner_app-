@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ask AI</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      height: 120px;
+      padding: 1rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
+    button {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #response {
+      margin-top: 2rem;
+      max-width: 600px;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🤖 Ask AI</h1>
+  <textarea id="question" placeholder="Type your question here..."></textarea>
+  <button onclick="askAI()">Ask</button>
+
+  <div id="response"></div>
+
+  <script>
+    async function askAI() {
+      const question = document.getElementById('question').value;
+      const responseDiv = document.getElementById('response');
+      responseDiv.innerText = "Thinking... 🤔";
+
+      try {
+        const res = await fetch('http://localhost:3000/ask', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message: question })
+        });
+
+        const data = await res.json();
+        responseDiv.innerText = data.reply || "No response from AI.";
+      } catch (error) {
+        responseDiv.innerText = "❌ Error contacting AI: " + error.message;
+        console.error(error);
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+

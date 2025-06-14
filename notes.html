@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📒 Notes & Resources</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+
+    .note-form {
+      display: flex;
+      flex-direction: column;
+      max-width: 500px;
+      margin: 20px auto;
+      gap: 10px;
+    }
+
+    input, textarea, select, button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .notes-container {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .note {
+      background: #fff;
+      border-left: 6px solid #333;
+      padding: 15px;
+      width: 300px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+      border-radius: 5px;
+    }
+
+    .timestamp {
+      font-size: 12px;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .btns {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btns button, .note a {
+      flex: 1;
+      padding: 6px;
+      font-size: 14px;
+    }
+
+    .note a {
+      text-align: center;
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    .note a:hover {
+      background-color: #1e7e34;
+    }
+
+    @media (max-width: 600px) {
+      .note {
+        width: 90%;
+      }
+    }
+  </style>
+
+  <!-- Include jsPDF library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1>📒 Notes & Resources</h1>
+
+  <div class="note-form">
+    <input type="text" id="noteTitle" placeholder="Title (optional)">
+    <textarea id="noteInput" rows="4" placeholder="Write your note here..."></textarea>
+    <input type="url" id="noteLink" placeholder="Link (optional, e.g. https://...)">
+    <select id="colorInput">
+      <option value="#333">Default</option>
+      <option value="green">Green</option>
+      <option value="blue">Blue</option>
+      <option value="orange">Orange</option>
+      <option value="red">Red</option>
+    </select>
+    <button onclick="addNote()">➕ Add Note</button>
+    <button onclick="exportNotes()">📄 Export to PDF</button>
+  </div>
+
+  <div class="notes-container" id="notesContainer"></div>
+
+  <script>
+    let notes = [];
+
+    function addNote() {
+      const content = document.getElementById("noteInput").value.trim();
+      const title = document.getElementById("noteTitle").value.trim();
+      const link = document.getElementById("noteLink").value.trim();
+      const color = document.getElementById("colorInput").value;
+
+      if (!content) {
+        alert("Please write a note!");
+        return;
+      }
+
+      const note = {
+        id: Date.now(),
+        title,
+        content,
+        link,
+        color,
+        timestamp: new Date().toLocaleString()
+      };
+
+      notes.push(note);
+      document.getElementById("noteInput").value = "";
+      document.getElementById("noteTitle").value = "";
+      document.getElementById("noteLink").value = "";
+      renderNotes();
+    }
+
+    function deleteNote(id) {
+      notes = notes.filter(n => n.id !== id);
+      renderNotes();
+    }
+
+    function editNote(id) {
+      const note = notes.find(n => n.id === id);
+      const newText = prompt("Edit your note:", note.content);
+      if (newText !== null && newText.trim() !== "") {
+        note.content = newText;
+        note.timestamp = new Date().toLocaleString();
+        renderNotes();
+      }
+    }
+
+    async function exportNotes() {
+      if (notes.length === 0) {
+        alert("No notes to export!");
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 10;
+
+      notes.forEach((note, index) => {
+        doc.setFontSize(14);
+        doc.text(`Note ${index + 1}: ${note.title || "Untitled"}`, 10, y);
+        y += 8;
+        doc.setFontSize(12);
+        doc.text(`Content: ${note.content}`, 10, y);
+        y += 8;
+        if (note.link) {
+          doc.text(`Link: ${note.link}`, 10, y);
+          y += 8;
+        }
+        doc.text(`Time: ${note.timestamp}`, 10, y);
+        y += 12;
+
+        if (y > 270) {
+          doc.addPage();
+          y = 10;
+        }
+      });
+
+      doc.save("my_notes.pdf");
+    }
+
+    function renderNotes() {
+      const container = document.getElementById("notesContainer");
+      container.innerHTML = "";
+
+      notes.forEach(note => {
+        const div = document.createElement("div");
+        div.className = "note";
+        div.style.borderLeftColor = note.color;
+
+        div.innerHTML = `
+          <strong>${note.title || "Untitled"}</strong><br>
+          <div>${note.content}</div>
+          ${note.link ? `<a href="${note.link}" target="_blank">🔗 Visit Link</a>` : ""}
+          <div class="timestamp">${note.timestamp}</div>
+          <div class="btns">
+            <button onclick="editNote(${note.id})">✏️ Edit</button>
+            <button onclick="deleteNote(${note.id})">🗑️ Delete</button>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+

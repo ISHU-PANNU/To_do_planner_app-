@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Next Day Planner</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8fafc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e40af;
+      margin-bottom: 1.5rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 4px #2563eb55;
+    }
+
+    .btn {
+      width: 100%;
+      background-color: #2563eb;
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      font-weight: bold;
+      font-size: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #1e3a8a;
+    }
+
+    .task-list {
+      margin-top: 2rem;
+    }
+
+    .task-item {
+      background-color: #ffffff;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #2563eb;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      transition: transform 0.2s;
+    }
+
+    .task-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .task-item strong {
+      color: #1e293b;
+    }
+
+    .task-item a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .task-item a:hover {
+      text-decoration: underline;
+    }
+
+    .delete {
+      float: right;
+      color: #ef4444;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .section-title {
+      color: #1e40af;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #1e40af;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🎯 Plan for Tomorrow</h2>
+
+    <input type="text" id="task" placeholder="✍️ Task" />
+    <input type="text" id="link" placeholder="🔗 Optional Link (e.g., YouTube)" />
+    <textarea id="note" placeholder="📝 Add a short note..."></textarea>
+
+    <button class="btn" onclick="addTask()">➕ Add Task</button>
+
+    <div class="task-list" id="taskList">
+      <h3 class="section-title"></h3>
+    </div>
+
+    <h3 class="section-title">🔁 Revision (Practice of Previous Work)</h3>
+    <textarea id="revisionText" rows="4" placeholder="📘 What will you revise tomorrow? E.g., DSA problems, past lectures..."></textarea>
+    <button class="btn" onclick="saveRevision()">💾 Save Revision</button>
+
+    <div class="footer">
+      <a href="dashboard.html">⬅️ Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    const taskList = document.getElementById('taskList');
+
+    function getTasks() {
+      return JSON.parse(localStorage.getItem('nextDayTasks') || '[]');
+    }
+
+    function saveTasks(tasks) {
+      localStorage.setItem('nextDayTasks', JSON.stringify(tasks));
+    }
+
+    function addTask() {
+      const task = document.getElementById('task').value.trim();
+      const link = document.getElementById('link').value.trim();
+      const note = document.getElementById('note').value.trim();
+
+      if (!task) return;
+
+      const newTask = { task, link, note };
+      const tasks = getTasks();
+      tasks.push(newTask);
+      saveTasks(tasks);
+      renderTasks();
+
+      document.getElementById('task').value = '';
+      document.getElementById('link').value = '';
+      document.getElementById('note').value = '';
+    }
+
+    function renderTasks() {
+      const tasks = getTasks();
+      taskList.innerHTML = '<h3 class="section-title">🗂️ Your Tasks</h3>';
+      tasks.forEach((t, i) => {
+        const div = document.createElement('div');
+        div.className = 'task-item';
+        div.innerHTML = `
+          <span class="delete" onclick="deleteTask(${i})">❌</span>
+          <strong>${t.task}</strong><br/>
+          🔗 ${t.link ? `<a href="${t.link}" target="_blank">${t.link}</a>` : 'No link'}<br/>
+          📝 ${t.note || ''}
+        `;
+        taskList.appendChild(div);
+      });
+    }
+
+    function deleteTask(index) {
+      const tasks = getTasks();
+      tasks.splice(index, 1);
+      saveTasks(tasks);
+      renderTasks();
+    }
+
+    function saveRevision() {
+      const text = document.getElementById('revisionText').value.trim();
+      localStorage.setItem('revisionText', text);
+      alert("✅ Revision plan saved!");
+    }
+
+    function loadRevision() {
+      const text = localStorage.getItem('revisionText');
+      if (text) {
+        document.getElementById('revisionText').value = text;
+      }
+    }
+
+    window.onload = function () {
+      renderTasks();
+      loadRevision();
+    }
+  </script>
+</body>
+</html>
+
+

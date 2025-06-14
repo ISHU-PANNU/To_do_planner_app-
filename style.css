@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  body {
+    background: linear-gradient(to right, #dbeafe, #e0f2fe);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .login-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+  }
+  h2 {
+    margin-bottom: 1rem;
+    color: #2563eb;
+    font-weight: 600;
+  }
+  .input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+    position: relative;
+  }
+  .input-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+  .input-group input {
+    width: 100%;
+    padding: 0.7rem 2.5rem 0.7rem 2.5rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .input-group i {
+    position: absolute;
+    top: 35px;
+    left: 10px;
+    color: #94a3b8;
+  }
+  .toggle-eye {
+    right: 10px;
+    left: auto !important;
+    cursor: pointer;
+  }
+  .input-group input:focus {
+    border-color: #3b82f6;
+  }
+  .login-btn {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.8rem;
+    width: 100%;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  .login-btn:hover {
+    background-color: #2563eb;
+  }
+  .footer-link {
+    margin-top: 1.2rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .footer-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .daily-quote {
+    text-align: center;
+    background: linear-gradient(to right, #e0f7fa, #f1f5f9);
+    padding: 1.5rem;
+    margin: 2rem 2rem 0 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  }
+  
+  .daily-quote h2 {
+    color: #0f172a;
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .daily-quote blockquote {
+    font-style: italic;
+    color: #334155;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .priority-section {
+    background: #fefce8;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1.5rem auto;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .priority-input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .priority-input-group input,
+  .priority-input-group select {
+    flex: 1;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
+  
+  .priority-input-group button {
+    background: #2563eb;
+    color: white;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .saved-priority-display {
+    margin-top: 1rem;
+    font-weight: 500;
+    color: #1f2937;
+  }
+  

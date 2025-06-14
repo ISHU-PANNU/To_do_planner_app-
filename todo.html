@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily To-Do Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #dbeafe, #e0f2fe);
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #2563eb;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .priority-section,
+    .section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      max-width: 600px;
+      width: 100%;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .section h2,
+    .priority-section h3 {
+      color: #1e40af;
+      margin-bottom: 1rem;
+    }
+
+    .priority-section {
+      background: #fefce8;
+    }
+
+    .priority-input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .priority-input-group input,
+    .priority-input-group select {
+      flex: 1;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .priority-input-group button {
+      background: #2563eb;
+      color: white;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .saved-priority-display {
+      margin-top: 1rem;
+      font-weight: 500;
+      background-color: #fef08a;
+      padding: 0.6rem;
+      border-radius: 8px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .input-group input,
+    .input-group select {
+      flex: 1;
+      padding: 0.6rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.5rem;
+    }
+
+    .input-group button {
+      padding: 0.6rem 1rem;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f1f5f9;
+      padding: 0.8rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: #6b7280;
+      background: #e0f7e9;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .complete-btn {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .back {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .back a {
+      text-decoration: none;
+      color: #1e40af;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      .priority-input-group,
+      .input-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 Daily To-Do Planner</h1>
+
+  <!-- Priority Task -->
+  <section class="priority-section">
+    <h3>📌 Priority Task of the Day</h3>
+    <div class="priority-input-group">
+      <input type="text" id="priority-task" placeholder="Enter priority task..." />
+      <select id="priority-level">
+        <option value="low">🟢 Low</option>
+        <option value="medium">🟡 Medium</option>
+        <option value="high">🔴 High</option>
+      </select>
+      <button onclick="savePriority()">Save</button>
+    </div>
+    <div id="saved-priority-task" class="saved-priority-display"></div>
+  </section>
+
+  <!-- Add Task -->
+  <div class="section">
+    <h2>🌅 Add Your Tasks</h2>
+    <div class="input-group">
+      <input type="text" id="taskInput" placeholder="Enter your task..." />
+      <select id="taskTime">
+        <option value="morning">🌞 Morning</option>
+        <option value="afternoon">🌤 Afternoon</option>
+        <option value="night">🌙 Night</option>
+      </select>
+      <button onclick="addTask()">Add</button>
+    </div>
+    <ul id="taskList"></ul>
+    <div class="back">
+      <a href="progress.html">📊 View Progress</a>
+    </div>
+  </div>
+
+  <script>
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    window.onload = () => {
+      renderTasks();
+
+      const savedPriority = localStorage.getItem("priorityTaskDisplay");
+      if (savedPriority) {
+        document.getElementById("saved-priority-task").innerHTML = savedPriority;
+      }
+    };
+
+    function savePriority() {
+      const task = document.getElementById('priority-task').value.trim();
+      const level = document.getElementById('priority-level').value;
+      const display = document.getElementById('saved-priority-task');
+
+      if (task !== "") {
+        const html = `🔥 <strong>${task}</strong> — Priority: <span style="text-transform:capitalize">${level}</span>`;
+        display.innerHTML = html;
+        localStorage.setItem("priorityTaskDisplay", html);
+        document.getElementById('priority-task').value = "";
+        document.getElementById('priority-level').value = "low";
+      } else {
+        display.innerHTML = "";
+        localStorage.removeItem("priorityTaskDisplay");
+      }
+    }
+
+    function addTask() {
+      const title = document.getElementById("taskInput").value.trim();
+      const time = document.getElementById("taskTime").value;
+
+      if (!title) return;
+
+      const newTask = {
+        title: title,
+        timeOfDay: time,
+        completed: false,
+        completedAt: null
+      };
+
+      tasks.push(newTask);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      document.getElementById("taskInput").value = "";
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const list = document.getElementById("taskList");
+      list.innerHTML = "";
+
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        if (task.completed) li.classList.add("completed");
+
+        li.innerHTML = `
+          <span>${task.title} <small>(${task.timeOfDay})</small></span>
+          <div class="actions">
+            <button class="complete-btn" onclick="markCompleted(${index})">✓</button>
+            <button class="delete-btn" onclick="deleteTask(${index})">🗑️</button>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function markCompleted(index) {
+      if (!tasks[index].completed) {
+        tasks[index].completed = true;
+        tasks[index].completedAt = new Date().toISOString();
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        renderTasks();
+      }
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      renderTasks();
+    }
+  </script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Planner Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #e0f7fa, #e0f2fe);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .daily-quote {
+      max-width: 900px;
+      margin: 0 auto 2rem;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      background: linear-gradient(to right, #f0f9ff, #e0f7fa);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .daily-quote h2 {
+      color: #0f172a;
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .daily-quote blockquote {
+      font-style: italic;
+      color: #334155;
+      font-size: 1.1rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .dashboard-card {
+      background: #ffffff;
+      border-radius: 1rem;
+      padding: 1.5rem 1.2rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      transition: 0.2s ease;
+      cursor: pointer;
+    }
+
+    .dashboard-card:hover {
+      background-color: #e0f2fe;
+      transform: translateY(-4px);
+    }
+
+    .dashboard-card h3 {
+      font-size: 1.3rem;
+      color: #1e3a8a;
+      margin-bottom: 0.5rem;
+    }
+
+    .dashboard-card p {
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.5;
+    }
+
+    @media screen and (max-width: 600px) {
+      .daily-quote h2 {
+        font-size: 1.2rem;
+      }
+
+      .dashboard-card h3 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Daily Quote -->
+  <section class="daily-quote">
+    <h2>🌟 Daily Motivation</h2>
+    <blockquote id="quoteText">"Start where you are. Use what you have. Do what you can."</blockquote>
+  </section>
+
+  <!-- Dashboard Grid -->
+  <section class="dashboard-grid">
+  <a href="todo.html" class="dashboard-card">
+    <h3>📝 To-Do</h3>
+    <p>Create and track your daily tasks efficiently.</p>
+  </a>
+
+  <a href="mocktest.html" class="dashboard-card">
+    <h3>✅ Mock Test</h3>
+    <p>Take practice tests and evaluate your performance.</p>
+  </a>
+
+  <a href="nextday.html" class="dashboard-card">
+    <h3>🎯 Next Day</h3>
+    <p>Plan your tasks for tomorrow in advance.</p>
+  </a>
+
+  <a href="askai.html" class="dashboard-card">
+    <h3>🤖 Ask AI</h3>
+    <p>Get AI-based tips, motivation, or suggestions instantly.</p>
+  </a>
+
+  <a href="progress.html" class="dashboard-card">
+    <h3>📊 Progress</h3>
+    <p>View weekly and monthly reports of your activities.</p>
+  </a>
+
+  <a href="notes.html" class="dashboard-card">
+    <h3>📚 Notes & Resources</h3>
+    <p>Save Links, Watch YouTube, and Take Notes in one place.</p>
+  </a>
+
+  <!-- ✅ NEW Productivity Techniques card -->
+  <a href="techniques.html" class="dashboard-card">
+    <h3>🧠 Productivity Techniques</h3>
+    <p>Explore methods like Pomodoro, Time Blocking, and more to stay focused.</p>
+  </a>
+</section>
+
+  
+  </section>
+
+  <!-- Daily Quote Script -->
+  <script>
+    const quotes = [
+      "Believe in yourself and all that you are.",
+      "Don’t watch the clock; do what it does. Keep going.",
+      "Discipline is the bridge between goals and accomplishment.",
+      "Success is the sum of small efforts, repeated day in and day out.",
+      "Push yourself, because no one else is going to do it for you.",
+      "Start where you are. Use what you have. Do what you can.",
+      "Consistency is what transforms average into excellence."
+    ];
+
+    const quoteText = document.getElementById("quoteText");
+    const today = new Date().getDate();
+    quoteText.textContent = `"${quotes[today % quotes.length]}"`;
+  </script>
+
+</body>
+</html>
+
+
+  
+
+

@@ -1,0 +1,28 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  input, textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .note {
+    background: #f0f0f0;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 5px solid teal;
+  }
+  

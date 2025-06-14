@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Planner App - Signup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+<body>
+  <div class="login-container">
+    <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_tfb3estd.json" background="transparent" speed="1" style="width: 200px; height: 200px;" loop autoplay></lottie-player>
+    <h2>Create Account</h2>
+    <form action="dashboard.html">
+      <div class="input-group">
+        <label for="name">Full Name</label>
+        <i class="fas fa-user"></i>
+        <input type="text" id="name" required />
+      </div>
+      <div class="input-group">
+        <label for="email">Email</label>
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" required />
+      </div>
+      <div class="input-group">
+        <label for="new-password">Password</label>
+        <i class="fas fa-lock"></i>
+        <input type="password" id="new-password" required />
+        <i class="fas fa-eye toggle-eye" id="toggleNewPassword"></i>
+      </div>
+      <button type="submit" class="login-btn">Sign Up</button>
+    </form>
+    <div class="footer-link">
+      <p>Already have an account? <a href="index.html">Login</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("toggleNewPassword").addEventListener("click", function () {
+      const passwordField = document.getElementById("new-password");
+      const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+      passwordField.setAttribute("type", type);
+      this.classList.toggle("fa-eye");
+      this.classList.toggle("fa-eye-slash");
+    });
+  </script>
+</body>
+</html>
